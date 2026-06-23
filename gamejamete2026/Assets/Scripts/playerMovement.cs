@@ -10,7 +10,7 @@ public class PlayerMovementTutorial : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed;
-
+    public float speedMult;
     public float groundDrag;
 
     public float jumpForce;
@@ -18,11 +18,9 @@ public class PlayerMovementTutorial : MonoBehaviour
     public float airMultiplier;
     bool readyToJump;
 
-    [HideInInspector] public float walkSpeed;
-    [HideInInspector] public float sprintSpeed;
-
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode sprintKey = KeyCode.LeftShift;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -126,7 +124,11 @@ public class PlayerMovementTutorial : MonoBehaviour
 
         // on ground
         if (grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        {
+            if(Input.GetKey(sprintKey)) rb.AddForce(moveDirection.normalized * moveSpeed * speedMult * 10f, ForceMode.Force);
+            else rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
+            
 
         // in air
         else if (!grounded && !drowning)
