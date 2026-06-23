@@ -46,6 +46,18 @@ public class EventWheel : MonoBehaviour
             Debug.Log("Monkeys are stronger!");
         }
     }
+
+    private class Tornados : Disaster
+    {
+        public Tornados() : base("Tornado alert!", 30)
+        { }
+
+        override
+        public void Action()
+        {
+            Debug.Log("Carefull for the wind!");
+        }
+    }
     private class Win : Disaster
     {
         public Win() : base("Victory", 1)
