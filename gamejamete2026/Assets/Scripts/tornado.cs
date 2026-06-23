@@ -53,7 +53,6 @@ public class Tornado : MonoBehaviour
 
         if (Physics.Raycast(checkPos, Vector3.down, checkDistance, whatIsGround))
         {
-            Debug.Log("works!");
             transform.position += move;
         }
         else
