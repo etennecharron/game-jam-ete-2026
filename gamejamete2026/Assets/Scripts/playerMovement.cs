@@ -28,12 +28,14 @@ public class PlayerMovementTutorial : MonoBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     public LayerMask whatIsWater;
-    public bool grounded;
-    public bool drowning;
+    bool grounded;
+    bool drowning;
 
 
     public Volume volume;
+    private Vignette vignette;
     private LiftGammaGain lift;
+        private Coroutine vignetteRoutine;
 
     public Transform orientation;
 
@@ -51,6 +53,7 @@ public class PlayerMovementTutorial : MonoBehaviour
 
         readyToJump = true;
 
+        volume.profile.TryGet(out vignette);
         volume.profile.TryGet(out lift);
     }
 
@@ -58,7 +61,6 @@ public class PlayerMovementTutorial : MonoBehaviour
     {
         // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
-        drowning = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsWater);
 
         MyInput();
         SpeedControl();
@@ -68,13 +70,6 @@ public class PlayerMovementTutorial : MonoBehaviour
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
-        if (drowning)
-        {
-            Debug.Log("UR DROWNING");
-            IsDrowining(true);
-        }
-
-        else IsDrowining(false);
         
 
     }
@@ -84,14 +79,27 @@ public class PlayerMovementTutorial : MonoBehaviour
     {
         MovePlayer();
     }
+
     public void IsDrowining(bool drowning)
     {
+
+        if (vignetteRoutine != null)
+            StopCoroutine(vignetteRoutine);
+
         if (drowning)
         {
             lift.active = true;
+            vignetteRoutine = StartCoroutine(AnimateVignette(0.6f, 5f));
         }
-        else lift.active = false;
+
+        else
+        {
+            lift.active = false;
+            vignetteRoutine = StartCoroutine(AnimateVignette(0f, 1f));
+        }
     }
+
+
 
     private void MyInput()
     {
@@ -159,4 +167,42 @@ public class PlayerMovementTutorial : MonoBehaviour
         readyToJump = true;
     }
 
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((whatIsWater.value & (1 << other.gameObject.layer)) != 0)
+        {
+            IsDrowining(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if ((whatIsWater.value & (1 << other.gameObject.layer)) != 0)
+        {
+            IsDrowining(false);
+        }
+    }
+
+    private IEnumerator AnimateVignette(float targetIntensity, float duration)
+    {
+        float startIntensity = vignette.intensity.value;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            vignette.intensity.value = Mathf.Lerp(
+                startIntensity,
+                targetIntensity,
+                elapsed / duration
+            );
+
+            yield return null;
+        }
+
+        vignette.intensity.value = targetIntensity;
+    }
 }
