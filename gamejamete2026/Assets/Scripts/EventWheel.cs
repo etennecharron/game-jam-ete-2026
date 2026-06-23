@@ -1,12 +1,25 @@
 using JetBrains.Annotations;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Build;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.VFX;
 using static Unity.VisualScripting.FlowStateWidget;
 
 public class EventWheel : MonoBehaviour
 {
+
+    [Header("Keybinds")]
+    public KeyCode eventKey = KeyCode.E;
+
+    private bool inRange =false;
+    private bool eventActivated = false;
+
+    public GameObject[] spawns;
+    public GameObject wheel;
 
     public List<Disaster> eventList = new List<Disaster>();
 
@@ -69,6 +82,12 @@ public class EventWheel : MonoBehaviour
             Debug.Log("VICTORY!");
         }
     }
+    
+    private void MoveWheel()
+    {
+        int random = UnityEngine.Random.Range(0, spawns.Length);
+        wheel.transform.position = new Vector3(spawns[random].transform.position.x, spawns[random].transform.position.y, spawns[random].transform.position.z);
+    }
 
     public Disaster GetRdmEvent()
     {
@@ -76,7 +95,7 @@ public class EventWheel : MonoBehaviour
         foreach (Disaster e in eventList)
             total += e.Luck;
 
-        float random = Random.Range(0, total);
+        float random = UnityEngine.Random.Range(0, total);
 
         foreach (Disaster e in eventList)
         {
@@ -98,5 +117,37 @@ public class EventWheel : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        myInput();
+    }
+    
+    private void myInput()
+    {
+        if(Input.GetKey(eventKey) && inRange && !eventActivated)
+        {
+           
+        /**
+         * 
+         * add eventActivated for the spinning wheel animation B)
+            eventActivated = true;
+        
+         */
+            GetRdmEvent();
+            MoveWheel();
+
+
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("enters");
+        inRange = true;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        inRange = false;
+    }
 
 }
