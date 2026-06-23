@@ -12,10 +12,12 @@ public class PlayerMovementTutorial : MonoBehaviour
     public float moveSpeed;
     public float speedMult;
     public float groundDrag;
+    private float currentMaxSpeed;
 
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
+    bool runWhileJumping;
     bool readyToJump;
 
     [Header("Keybinds")]
@@ -46,6 +48,8 @@ public class PlayerMovementTutorial : MonoBehaviour
 
     private void Start()
     {
+        currentMaxSpeed = moveSpeed;
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -128,16 +132,10 @@ public class PlayerMovementTutorial : MonoBehaviour
             if(Input.GetKey(sprintKey)) rb.AddForce(moveDirection.normalized * moveSpeed * speedMult * 10f, ForceMode.Force);
             else rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
-            
-
-        // in air
-        else if (!grounded && !drowning)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-
         // in water
         else if (drowning)
         {
-            vel.y = Mathf.Lerp(vel.y, -2f, 5f * Time.fixedDeltaTime); // limite la chute
+            vel.y = Mathf.Lerp(vel.y, -2f, 5f * Time.fixedDeltaTime);
             rb.linearVelocity = vel;
         }
 
@@ -149,11 +147,21 @@ public class PlayerMovementTutorial : MonoBehaviour
     {
         Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
-        // limit velocity if needed
-        if (flatVel.magnitude > moveSpeed)
+        if (grounded)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
+            currentMaxSpeed = Input.GetKey(sprintKey)
+                ? moveSpeed * speedMult
+                : moveSpeed;
+        }
+
+        if (flatVel.magnitude > currentMaxSpeed)
+        {
+            Vector3 limitedVel = flatVel.normalized * currentMaxSpeed;
+            rb.linearVelocity = new Vector3(
+                limitedVel.x,
+                rb.linearVelocity.y,
+                limitedVel.z
+            );
         }
     }
 

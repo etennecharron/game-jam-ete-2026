@@ -865,7 +865,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4585991712497361690, guid: 29e0f7eb027bdf644b298a5f6a37e788, type: 3}
       propertyPath: speedMult
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5207963010307612304, guid: 29e0f7eb027bdf644b298a5f6a37e788, type: 3}
       propertyPath: m_RenderPostProcessing
