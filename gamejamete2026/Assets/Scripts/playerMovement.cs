@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerMovementTutorial : MonoBehaviour
 {
@@ -24,7 +27,13 @@ public class PlayerMovementTutorial : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded;
+    public LayerMask whatIsWater;
+    public bool grounded;
+    public bool drowning;
+
+
+    public Volume volume;
+    private LiftGammaGain lift;
 
     public Transform orientation;
 
@@ -41,12 +50,15 @@ public class PlayerMovementTutorial : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
+
+        volume.profile.TryGet(out lift);
     }
 
     private void Update()
     {
         // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        drowning = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsWater);
 
         MyInput();
         SpeedControl();
@@ -56,11 +68,29 @@ public class PlayerMovementTutorial : MonoBehaviour
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
+        if (drowning)
+        {
+            Debug.Log("UR DROWNING");
+            IsDrowining(true);
+        }
+
+        else IsDrowining(false);
+        
+
     }
+    
 
     private void FixedUpdate()
     {
         MovePlayer();
+    }
+    public void IsDrowining(bool drowning)
+    {
+        if (drowning)
+        {
+            lift.active = true;
+        }
+        else lift.active = false;
     }
 
     private void MyInput()
@@ -81,6 +111,8 @@ public class PlayerMovementTutorial : MonoBehaviour
 
     private void MovePlayer()
     {
+        Vector3 vel = rb.linearVelocity;
+
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
@@ -89,8 +121,18 @@ public class PlayerMovementTutorial : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
         // in air
-        else if (!grounded)
+        else if (!grounded && !drowning)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+
+        // in water
+        else if (drowning)
+        {
+            vel.y = Mathf.Lerp(vel.y, -2f, 5f * Time.fixedDeltaTime); // limite la chute
+            rb.linearVelocity = vel;
+        }
+
+
+
     }
 
     private void SpeedControl()
@@ -116,4 +158,5 @@ public class PlayerMovementTutorial : MonoBehaviour
     {
         readyToJump = true;
     }
+
 }
