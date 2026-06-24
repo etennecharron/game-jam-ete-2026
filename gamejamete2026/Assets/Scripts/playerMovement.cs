@@ -183,6 +183,7 @@ public class PlayerMovementTutorial : MonoBehaviour
     {
         if ((whatIsWater.value & (1 << other.gameObject.layer)) != 0)
         {
+            drowning = true;
             IsDrowining(true);
         }
     }
@@ -191,6 +192,7 @@ public class PlayerMovementTutorial : MonoBehaviour
     {
         if ((whatIsWater.value & (1 << other.gameObject.layer)) != 0)
         {
+            drowning = false;
             IsDrowining(false);
         }
     }
