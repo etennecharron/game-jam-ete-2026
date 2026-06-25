@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9168628543767511117}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: playerBundle
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1531071479299192101}
   - component: {fileID: 5244919103186304830}
   - component: {fileID: 6588406438513302506}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2969517770725783840}
   - component: {fileID: 7023340037676491559}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Temp Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,8 +167,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2947195425419685060}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.00040738835, y: 0.57509834, z: -0.68778676, w: 0.44295734}
+  m_LocalPosition: {x: -1.1012366, y: -0.06812193, z: 1.0294111}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -186,6 +186,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5098f4cf1991f48ad96b7d5838d28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3830129522574923131
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6667985928618518145}
+  m_Layer: 2
+  m_Name: ObjectGrabPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6667985928618518145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3830129522574923131}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7922731404472927566}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4478467014890734448
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +226,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 457183071928419006}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: orientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +260,7 @@ GameObject:
   - component: {fileID: 8796932864305762}
   - component: {fileID: 2674875023066658740}
   - component: {fileID: 3031129400404864379}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: playerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,9 +280,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2969517770725783840}
   - {fileID: 8559059720341023969}
   - {fileID: 8666715576088203106}
-  - {fileID: 2969517770725783840}
   m_Father: {fileID: 7400161001183687920}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8796932864305762
@@ -344,7 +375,7 @@ GameObject:
   - component: {fileID: 8913733365954378515}
   - component: {fileID: 4567585332209080822}
   - component: {fileID: 3730857977505400728}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FreeLook Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,8 +390,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6640706524775101530}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.54866666, y: -0.17014484, z: -0.11519365, w: 0.8103987}
-  m_LocalPosition: {x: 12.26355, y: -19.964514, z: -13.844485}
+  m_LocalRotation: {x: 0.25644138, y: 0.73636055, z: 0.49854034, w: -0.37877238}
+  m_LocalPosition: {x: 13.086235, y: -19.964514, z: -10.850284}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -443,7 +474,7 @@ MonoBehaviour:
     SplineCurvature: 0.353
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: -23.716162
+    Value: -125.55908
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -590,7 +621,7 @@ GameObject:
   - component: {fileID: 5207963010307612304}
   - component: {fileID: 662720290955992340}
   - component: {fileID: 2083776111914775686}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: playerCam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -605,11 +636,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7818414799686999669}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.54866487, y: -0.17015819, z: -0.115202725, w: 0.8103959}
-  m_LocalPosition: {x: 12.26361, y: -19.964514, z: -13.84446}
+  m_LocalRotation: {x: 0.25644025, y: 0.7363614, z: 0.498541, w: -0.37877074}
+  m_LocalPosition: {x: 13.08623, y: -19.964514, z: -10.850277}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6667985928618518145}
   m_Father: {fileID: 9168628543767511117}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1021993241139453302
@@ -777,7 +809,8 @@ GameObject:
   - component: {fileID: 4585991712497361690}
   - component: {fileID: 5389420150661682767}
   - component: {fileID: 6165633813005802202}
-  m_Layer: 0
+  - component: {fileID: 6117086920262003509}
+  m_Layer: 2
   m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -881,7 +914,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7923989222056135319}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4f587269b3c9704b8067b4f824c5ea1, type: 3}
   m_Name: 
@@ -894,6 +927,24 @@ MonoBehaviour:
   throwKey: 323
   throwForce: 70
   throwUpwardForce: 0
+--- !u!114 &6117086920262003509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7923989222056135319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b24c92a368b9c83468b11324d2a11148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamTransform: {fileID: 7922731404472927566}
+  objectGrabPointTransform: {fileID: 6667985928618518145}
+  pickupDistance: 20
+  pickUpLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &8951977741402365298
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8666715576088203106}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ThrowPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

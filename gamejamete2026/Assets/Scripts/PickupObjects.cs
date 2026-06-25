@@ -1,62 +1,54 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PickupObjects : MonoBehaviour
 {
-    bool isHoldingObject = false;
-    
-    TempParent tempParent;
-    Rigidbody rb;
+    [SerializeField] private Transform playerCamTransform;
+    [SerializeField] private Transform objectGrabPointTransform;
+    [SerializeField] private float pickupDistance = 20f;
+    [SerializeField] private LayerMask pickUpLayerMask;
+    private ObjectGrabbable objectGrabbable;
 
-    Vector3 objectPos;
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        tempParent = TempParent.Instance;
-    }
+    [SerializeField] float throwForce = 600f;
+    [SerializeField] float throwUpwardForce;
 
-    void Update()
+    private void Update()
     {
-        if(isHoldingObject)
+        //Grabs the object when mouse button is held down and the object is in range and is grabbable
+        if (Input.GetMouseButtonDown(0))
         {
-            Hold();
+            if (objectGrabbable == null)
+            {
+                if (Physics.Raycast(playerCamTransform.position, playerCamTransform.forward, out RaycastHit raycastHit, pickupDistance))
+                {
+                    //Debug.Log(raycastHit.transform);
+                    if (raycastHit.transform.TryGetComponent(out ObjectGrabbable objectGrabbable))
+                    {
+                        this.objectGrabbable = objectGrabbable;
+                        objectGrabbable.Grab(objectGrabPointTransform);
+                        //Debug.Log(objectGrabbable);
+                    }
+                }
+            }
         }
-    }
-
-    private void OnMouseDown()
-    {
-        //pickup
-        if (tempParent != null)
+        //Drop the object when mouse button is released
+        if (Input.GetMouseButtonUp(0))
         {
-            isHoldingObject = true;
-            rb.useGravity = false;
-            rb.detectCollisions = true;
-
-            this.transform.SetParent(tempParent.transform);
+            if (objectGrabbable != null)
+            {
+                objectGrabbable.Release();
+                objectGrabbable = null;
+            }
         }
-        else
+        //Throw the object when right mouse button is pressed
+        if (Input.GetMouseButton(1))
         {
-            Debug.Log("Temp Parent not in scene");
+            if(objectGrabbable != null)
+            {
+                objectGrabbable.Throw(throwForce, throwUpwardForce, playerCamTransform);
+                objectGrabbable = null;
+            }
         }
-    }
-    private void OnMouseUp()
-    {
-        //drop
-        isHoldingObject = false;
-        rb.useGravity = true;
-        rb.detectCollisions = true;
-        this.transform.SetParent(null);
-    }
-    private void OnMouseExit()
-    {
-        //drop
-        isHoldingObject = false;
-        rb.useGravity = true;
-        rb.detectCollisions = true;
-        this.transform.SetParent(null);
-    }
-    private void Hold()
-    {
-        objectPos = tempParent.transform.position;
-        this.transform.position = objectPos;
     }
 }
