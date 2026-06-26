@@ -87,6 +87,7 @@ public class EventWheel : MonoBehaviour
     {
         int random = UnityEngine.Random.Range(0, spawns.Length);
         wheel.transform.position = new Vector3(spawns[random].transform.position.x, spawns[random].transform.position.y, spawns[random].transform.position.z);
+        wheel.transform.rotation = spawns[random].transform.rotation;
     }
 
     public Disaster GetRdmEvent()
