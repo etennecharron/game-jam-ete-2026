@@ -5,9 +5,13 @@ using TMPro;
 using System;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovementTutorial : MonoBehaviour
 {
+    public gameManager gameManager;
+
     [Header("Movement")]
     public float moveSpeed;
     public float speedMult;
@@ -33,7 +37,7 @@ public class PlayerMovementTutorial : MonoBehaviour
 
 
     public Volume volume;
-    private Vignette vignette;
+    private  UnityEngine.Rendering.Universal.Vignette vignette;
     private LiftGammaGain lift;
         private Coroutine vignetteRoutine;
 
@@ -91,13 +95,13 @@ public class PlayerMovementTutorial : MonoBehaviour
         if (drowning)
         {
             lift.active = true;
-            vignetteRoutine = StartCoroutine(AnimateVignette(0.6f, 5f));
+            vignetteRoutine = StartCoroutine(AnimateVignette(0.6f, 5f,true));
         }
 
         else
         {
             lift.active = false;
-            vignetteRoutine = StartCoroutine(AnimateVignette(0f, 1f));
+            vignetteRoutine = StartCoroutine(AnimateVignette(0f, 1f,false));
         }
     }
 
@@ -197,7 +201,7 @@ public class PlayerMovementTutorial : MonoBehaviour
         }
     }
 
-    private IEnumerator AnimateVignette(float targetIntensity, float duration)
+    private IEnumerator AnimateVignette(float targetIntensity, float duration,bool willDie)
     {
         float startIntensity = vignette.intensity.value;
         float elapsed = 0f;
@@ -216,5 +220,16 @@ public class PlayerMovementTutorial : MonoBehaviour
         }
 
         vignette.intensity.value = targetIntensity;
+
+        if (vignette.intensity.value == targetIntensity && willDie)
+        {
+            death();
+
+        }
+    }
+
+    private void death()
+    {
+        gameManager.lostGame();
     }
 }

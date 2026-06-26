@@ -13,11 +13,7 @@ public class playerView : MonoBehaviour
     public float rotationSpeed;
 
 
-    public void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+
 
     public void Update()
     {
