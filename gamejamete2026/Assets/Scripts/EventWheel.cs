@@ -1,58 +1,60 @@
+using JetBrains.Annotations;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Build;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.VFX;
+using static Unity.VisualScripting.FlowStateWidget;
 
 public class EventWheel : MonoBehaviour
 {
+
     [Header("Keybinds")]
     public KeyCode eventKey = KeyCode.E;
 
-    private bool inRange = false;
+    private bool inRange =false;
     private bool eventActivated = false;
 
     public GameObject[] spawns;
     public GameObject wheel;
 
-    [Header("Wheel Visual")]
-    public RectTransform wheelUI;
-    public WheelSection sectionPrefab;
-    public float iconRadius = 150f;
-
     public List<Disaster> eventList = new List<Disaster>();
-
-    private List<WheelSection> sections = new List<WheelSection>();
-
-    private Disaster currentResult;
 
 
     public abstract class Disaster
     {
         public string Name { get; private set; }
         public float Luck { get; private set; }
-
         public Disaster(string name, float luck)
         {
             Name = name;
             Luck = luck;
         }
-
-        public abstract void Action();
+        abstract public void Action();
     }
 
     private class Flood : Disaster
     {
-        public Flood() : base("Flood", 30) { }
+        public Flood() : base("Flood", 30)
+        { }
 
-        public override void Action()
+        override
+        public void Action()
         {
             Debug.Log("FLOOOOOODS AND STUFF");
         }
-    }
 
+    }
     private class BuffMonkeys : Disaster
     {
-        public BuffMonkeys() : base("Stronger monkeys", 30) { }
+        public BuffMonkeys() : base("Stronger monkeys", 30)
+        { }
 
-        public override void Action()
+        override
+        public void Action()
         {
             Debug.Log("Monkeys are stronger!");
         }
@@ -60,72 +62,44 @@ public class EventWheel : MonoBehaviour
 
     private class Tornados : Disaster
     {
-        public Tornados() : base("Tornado alert!", 30) { }
+        public Tornados() : base("Tornado alert!", 30)
+        { }
 
-        public override void Action()
+        override
+        public void Action()
         {
-            Debug.Log("Careful for the wind!");
+            Debug.Log("Carefull for the wind!");
         }
     }
-
     private class Win : Disaster
     {
-        public Win() : base("Victory", 1) { }
+        public Win() : base("Victory", 1)
+        { }
 
-        public override void Action()
+        override
+        public void Action()
         {
             Debug.Log("VICTORY!");
         }
     }
-
-
-    void Start()
-    {
-        eventList.Add(new Flood());
-        eventList.Add(new BuffMonkeys());
-        eventList.Add(new Win());
-
-        CreateWheel();
-        UpdateWheel();
-    }
-
-    void Update()
-    {
-        myInput();
-    }
-
-    private void myInput()
-    {
-        if (Input.GetKey(eventKey) && inRange && !eventActivated)
-        {
-            eventActivated = true;
-
-            currentResult = GetRdmEvent(); 
-
-            MoveWheel();
-
-            SpinToEvent(currentResult);
-        }
-    }
-
+    
     private void MoveWheel()
     {
-        int random = Random.Range(0, spawns.Length);
-        wheel.transform.position = spawns[random].transform.position;
+        int random = UnityEngine.Random.Range(0, spawns.Length);
+        wheel.transform.position = new Vector3(spawns[random].transform.position.x, spawns[random].transform.position.y, spawns[random].transform.position.z);
     }
-
 
     public Disaster GetRdmEvent()
     {
-        float total = 0f;
-
-        foreach (var e in eventList)
+        float total = 0;
+        foreach (Disaster e in eventList)
             total += e.Luck;
 
-        float random = Random.Range(0, total);
+        float random = UnityEngine.Random.Range(0, total);
 
-        foreach (var e in eventList)
+        foreach (Disaster e in eventList)
         {
+
             random -= e.Luck;
 
             if (random <= 0)
@@ -135,117 +109,45 @@ public class EventWheel : MonoBehaviour
         return eventList[0];
     }
 
-    public void CreateWheel()
+    public void Start()
     {
-        foreach (Transform child in wheelUI)
-            Destroy(child.gameObject);
+        eventList.Add(new Flood());
+        eventList.Add(new BuffMonkeys());
+        eventList.Add(new Win());
 
-        sections.Clear();
-
-        for (int i = 0; i < eventList.Count; i++)
-        {
-            WheelSection s = Instantiate(sectionPrefab, wheelUI);
-            s.gameObject.SetActive(true);
-
-            sections.Add(s);
-        }
     }
 
-
-    public void UpdateWheel()
+    private void Update()
     {
-        float total = 0f;
-
-        foreach (var e in eventList)
-            total += e.Luck;
-
-        float angle = 0f;
-
-        for (int i = 0; i < eventList.Count; i++)
-        {
-            Disaster d = eventList[i];
-            WheelSection s = sections[i];
-
-            float percent = d.Luck / total;
-            float size = percent * 360f;
-
-            s.fillImage.fillAmount = percent;
-            s.fillImage.rectTransform.localRotation =
-                Quaternion.Euler(0, 0, -angle);
-
-            if (s.text != null)
-                s.text.text = d.Name;
-
-            float mid = angle + size * 0.5f;
-
-            Vector2 pos = new Vector2(
-                Mathf.Cos(mid * Mathf.Deg2Rad),
-                Mathf.Sin(mid * Mathf.Deg2Rad)
-            ) * iconRadius;
-
-            s.icon.rectTransform.anchoredPosition = pos;
-
-            angle += size;
-        }
+        myInput();
     }
-
-    private void SpinToEvent(Disaster target)
+    
+    private void myInput()
     {
-        float total = 0f;
-
-        foreach (var e in eventList)
-            total += e.Luck;
-
-        float startAngle = 0f;
-
-        int index = eventList.IndexOf(target);
-
-        for (int i = 0; i < index; i++)
-            startAngle += (eventList[i].Luck / total) * 360f;
-
-        float size = (target.Luck / total) * 360f;
-
-        float middle = startAngle + size * 0.5f;
-
-        float finalAngle = 360f * Random.Range(5, 8) + middle;
-
-        StartCoroutine(SpinAnimation(finalAngle));
-    }
-
-    private System.Collections.IEnumerator SpinAnimation(float targetAngle)
-    {
-        float start = wheelUI.eulerAngles.z;
-        float t = 0f;
-        float duration = 4f;
-
-        while (t < duration)
+        if(Input.GetKey(eventKey) && inRange && !eventActivated)
         {
-            t += Time.deltaTime;
+           
+        /**
+         * 
+         * add eventActivated for the spinning wheel animation B)
+            eventActivated = true;
+        
+         */
+            GetRdmEvent();
+            MoveWheel();
 
-            float lerp = t / duration;
-            lerp = 1 - Mathf.Pow(1 - lerp, 3);
 
-            float angle = Mathf.Lerp(start, targetAngle, lerp);
-
-            wheelUI.rotation = Quaternion.Euler(0, 0, angle);
-
-            yield return null;
         }
-
-        wheelUI.rotation = Quaternion.Euler(0, 0, targetAngle);
-
-        currentResult.Action();
-
-        eventActivated = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("enters");
         inRange = true;
     }
-
     private void OnTriggerExit(Collider other)
     {
         inRange = false;
     }
+
 }
