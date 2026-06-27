@@ -25,6 +25,7 @@ public class EventWheel : MonoBehaviour
     public List<Disaster> eventList = new List<Disaster>();
 
     public GameObject tornado;
+    public FloodDisaster flood;
 
     [SerializeField] private PickerWheel pickerWheel;
 
@@ -49,13 +50,28 @@ public class EventWheel : MonoBehaviour
 
     private class Flood : Disaster
     {
-        public Flood() : base("Flood", 30)
-        { }
+
+        public FloodDisaster FloodDisaster { get; protected set; }
+
+        public Flood(FloodDisaster floodDisaster) : base("Flood", 30)
+        {
+            FloodDisaster = floodDisaster;
+        }
 
         override
         public void Action()
         {
-            Debug.Log("FLOOOOOODS AND STUFF");
+            if (!activated)
+            {
+                activated = true;
+                FloodDisaster.StartFlood();
+            }
+            else
+            {
+                FloodDisaster.time *= 0.9f;
+                FloodDisaster.maxHeight *= 1.1f;
+                    
+            }
         }
 
     }
@@ -114,6 +130,7 @@ public class EventWheel : MonoBehaviour
         tornado.SetActive(false);
         eventList.Add(new Tornados(tornado));
         eventList.Add(new Win(gameManager));
+        eventList.Add(new Flood(flood));
 
     }
 

@@ -1,67 +1,47 @@
-using System.Collections;
 using UnityEngine;
 
-public class Flood : MonoBehaviour
+public class FloodDisaster : MonoBehaviour
 {
-
     public GameObject ocean;
-    public float maxHeight;
+    public float maxHeight = 5f;
+    public float time = 3f;
+
     private bool isFlooding;
-    public float time;
+
+    private float startHeight;
+    private Vector3 startPos;
+    private float timer;
 
     private void Start()
     {
-        StartFlood();
+        startPos = ocean.transform.position;
+        startHeight = startPos.y;
+    }
+
+    private void Update()
+    {
+        if (!isFlooding)
+            return;
+
+        timer += Time.deltaTime;
+
+        // Va de 0 à 1 puis revient à 0
+        float t = Mathf.PingPong(timer / time, 1f);
+
+        float y = Mathf.Lerp(startHeight, startHeight + maxHeight, t);
+
+        ocean.transform.position = new Vector3(startPos.x, y, startPos.z);
     }
 
     public void StartFlood()
     {
+        timer = 0f;
         isFlooding = true;
-        StartCoroutine(AnimateFlood());
     }
 
-
-    private IEnumerator AnimateFlood()
+    public void StopFlood()
     {
-        
-        float startPos = ocean.transform.position.y;
-        float targetPos = startPos + maxHeight;
-
-        float elapsed = 0f;
-        Vector3 pos = ocean.transform.position;
-
-        while (isFlooding)
-        {
-            while (elapsed < time)
-            {
-                elapsed += Time.deltaTime;
-
-                float y = Mathf.Lerp(startPos, targetPos, elapsed / time);
-                ocean.transform.position = new Vector3(pos.x, y, pos.z);
-
-                yield return null;
-            }
-
-            ocean.transform.position = new Vector3(pos.x, targetPos, pos.z);
-
-            yield return new WaitForSeconds(1f);
-
-            elapsed = 0f;
-
-            while (elapsed < time)
-            {
-                elapsed += Time.deltaTime;
-
-                float y = Mathf.Lerp(targetPos, startPos, elapsed / time);
-                ocean.transform.position = new Vector3(pos.x, y, pos.z);
-
-                yield return null;
-            }
-        }
-
-
-
-        ocean.transform.position = new Vector3(pos.x, startPos, pos.z);
+        isFlooding = false;
+        ocean.transform.position = startPos;
     }
-
 }

@@ -1401,7 +1401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ocean: {fileID: 2101191481}
   maxHeight: 10
-  time: 60
+  time: 5
 --- !u!1001 &7923380385376380882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1415,20 +1415,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
-      propertyPath: wheelPieces.Array.data[0].Label
-      value: Victory
+      propertyPath: wheelPieces.Array.data[1].Label
+      value: Flood
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
-      propertyPath: wheelPieces.Array.data[1].Label
-      value: Tornado
+      propertyPath: wheelPieces.Array.data[2].Label
+      value: Flood
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
       propertyPath: wheelPieces.Array.data[0].Amount
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
       propertyPath: wheelPieces.Array.data[0].Chance
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
       propertyPath: wheelPieces.Array.data[1].Amount
@@ -1436,7 +1436,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
       propertyPath: wheelPieces.Array.data[1].Chance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
+      propertyPath: wheelPieces.Array.data[2].Amount
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 114361574848870256, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
+      propertyPath: wheelPieces.Array.data[2].Chance
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 1403385883881661860, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
       propertyPath: m_LocalScale.x
@@ -1486,6 +1494,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5838187337831420155, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
+      propertyPath: flood
+      value: 
+      objectReference: {fileID: 2101191486}
     - target: {fileID: 5838187337831420155, guid: 482b114f9e6a79b41a1da8377e4006dc, type: 3}
       propertyPath: tornado
       value: 
