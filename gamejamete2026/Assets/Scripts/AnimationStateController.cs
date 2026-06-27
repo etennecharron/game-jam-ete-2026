@@ -3,23 +3,41 @@ using UnityEngine;
 public class AnimationStateController : MonoBehaviour
 {
     Animator animator;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-     animator = GetComponent<Animator>();   
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w"))
+        bool IsWalking = Input.GetKey("w") || Input.GetKey("s") || Input.GetKey("a") || Input.GetKey("d");
+        bool runPressed = Input.GetKey("left shift");
+
+        animator.SetBool("IsWalking", IsWalking);
+
+        bool IsRunning = animator.GetBool("IsRunning");
+
+        if (!IsRunning && IsWalking && runPressed)
         {
-            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsRunning", true);
         }
 
-        if (!Input.GetKey("w"))
+        if (IsRunning && (!IsWalking || !runPressed))
         {
-            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsRunning", false);
         }
+
+        if (Input.GetKey("space"))
+        {
+            animator.SetBool("Jumping", true);
+        }
+
+        if (!Input.GetKey("space"))
+        {
+            animator.SetBool("JumpingFall", true);
+        }
+
+
     }
 }
