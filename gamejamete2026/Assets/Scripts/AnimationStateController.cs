@@ -35,7 +35,7 @@ public class AnimationStateController : MonoBehaviour
 
         if (!Input.GetKey("space"))
         {
-            animator.SetBool("JumpingFall", true);
+            animator.SetBool("Jumping", false);
         }
 
 
