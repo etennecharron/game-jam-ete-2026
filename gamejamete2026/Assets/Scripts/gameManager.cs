@@ -64,6 +64,7 @@ public class gameManager : MonoBehaviour
         Cursor.visible = true;
 
         wonTxt.gameObject.SetActive(true);
+        continueBtn.gameObject.SetActive(true);
         resetBtn.gameObject.SetActive(true);
     }
     public void resetGame()

@@ -111,7 +111,6 @@ public class EventWheel : MonoBehaviour
         public Win(gameManager gameManager) : base("Victory", 1)
         {
             GameManager = gameManager;
-            Message = "You won!";
         }
 
         override

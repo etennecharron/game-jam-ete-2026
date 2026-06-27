@@ -2936,7 +2936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pullForce: 15
   rotateForce: 50
-  upwardForce: 50
+  upwardForce: 40
   map: {fileID: 1251731698}
   speed: 50
 --- !u!95 &243125902
