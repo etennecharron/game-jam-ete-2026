@@ -56,6 +56,7 @@ public class EventWheel : MonoBehaviour
         public Flood(FloodDisaster floodDisaster) : base("Flood", 30)
         {
             FloodDisaster = floodDisaster;
+            Message = "The water levels are rising rapidly";
         }
 
         override
@@ -109,6 +110,7 @@ public class EventWheel : MonoBehaviour
         private gameManager GameManager;
         public Win(gameManager gameManager) : base("Victory", 1)
         {
+            GameManager = gameManager;
             Message = "You won!";
         }
 
